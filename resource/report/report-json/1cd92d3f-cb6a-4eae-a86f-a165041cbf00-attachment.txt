@@ -1,0 +1,2 @@
+[32m2025-05-23 14:50:22.392[0m | [31m[1mERROR   [0m | [36mcommon.request.request_service[0m:[36mrequest[0m:[36m26[0m | [31m[1mHTTPConnectionPool(host='openapi.portal.nbpod3-31-181-20030.4a.cmit.cloud', port=80): Max retries exceeded with url: /apisix/plugin/jwt/sign (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x00000268C9695290>, 'Connection to openapi.portal.nbpod3-31-181-20030.4a.cmit.cloud timed out. (connect timeout=None)'))[0m
+None
