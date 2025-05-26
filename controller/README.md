@@ -1,2 +1,0 @@
-# ApiAutomationTest
-Api Automation Test
