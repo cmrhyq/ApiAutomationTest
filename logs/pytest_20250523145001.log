@@ -1,2 +1,0 @@
-2025-05-23 14:50:01 --> conftest.py [line:48 ] --> INFO  --> Starting test: test_case_01
-2025-05-23 14:50:22 --> conftest.py [line:54 ] --> INFO  --> Test completed: test_case_01, Result: PASSED
