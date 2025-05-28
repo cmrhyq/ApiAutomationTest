@@ -9,9 +9,6 @@ class BaseConfig(object):
     APP_RUN_HOST= "127.0.0.1"
     APP_RUN_PORT = 5000
 
-    # 配置密钥
-    SECRET_KEY = os.urandom(24)
-
     # 数据库连接格式
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://user:password@localhost:3306/test?charset=utf8"
     # 动态追踪修改设置，如未设置只会提示警告

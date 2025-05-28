@@ -34,6 +34,11 @@ def create_app():
     # 数据库配置
     app.config['SQLALCHEMY_DATABASE_URI'] = sys_config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = sys_config.SQLALCHEMY_TRACK_MODIFICATIONS
+    app.config['SQLALCHEMY_ECHO'] = sys_config.SQLALCHEMY_ECHO
+    app.config['SQLALCHEMY_POOL_SIZE'] = sys_config.SQLALCHEMY_POOL_SIZE
+    app.config['SQLALCHEMY_POOL_TIMEOUT'] = sys_config.SQLALCHEMY_POOL_TIMEOUT
+    app.config['SQLALCHEMY_MAX_OVERFLOW'] = sys_config.SQLALCHEMY_MAX_OVERFLOW
+    app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
     # 初始化数据库
     db.init_app(app)
