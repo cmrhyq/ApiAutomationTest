@@ -18,6 +18,17 @@
 ### 数据库
 1. Sqlite
 
+## 配置
+### 环境变量配置
+在项目根目录下创建 `.env` 文件，配置以下环境变量：
+
+```env
+# dev, prod, test
+FLASK_ENV=dev
+# Flask App Secret Key
+SECRET_KEY=1234567890
+```
+
 ## 查看报告
 ```shell
 allure serve resource/report/report-json/
