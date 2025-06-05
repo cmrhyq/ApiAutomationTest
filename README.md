@@ -33,3 +33,7 @@ SECRET_KEY=1234567890
 ```shell
 allure serve resource/report/report-json/
 ```
+
+## 未开启的功能
+- Electron
+  1. 安装依赖：electron、electron-builder

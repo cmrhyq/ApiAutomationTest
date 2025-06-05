@@ -7,7 +7,7 @@ user_bp = Blueprint('user', __name__, url_prefix='/api/v1/users')
 @user_bp.route('/', methods=['GET'])
 def get_all_users():
     users = User.query.all()
-    return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])
+    return jsonify([{'id': user.id, 'username': user.username, 'email': user.email, 'created_at': user.created_at} for user in users])
 
 @user_bp.route('/', methods=['POST'])
 def create_user():
