@@ -1,0 +1,21 @@
+# 线上配置文件
+server:
+  port: 8101
+spring:
+  # 数据库配置
+  # 需替换配置
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:./data/api_auto_test.db
+    username:
+    password:
+mybatis-plus:
+  configuration:
+    # 生产环境关闭日志
+    log-impl: ''
+# 接口文档配置
+knife4j:
+  basic:
+    enable: true
+    username: root
+    password: 123456

@@ -1,2 +1,0 @@
-[32mINFO    [0m pytest:conftest.py:48 Starting test: test_case_01
-[32mINFO    [0m pytest:conftest.py:54 Test completed: test_case_01, Result: PASSED

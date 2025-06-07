@@ -1,2 +1,0 @@
-[32m2025-05-23 15:46:48.957[0m | [31m[1mERROR   [0m | [36mcommon.request.request_service[0m:[36mrequest[0m:[36m26[0m | [31m[1mHTTPConnectionPool(host='openapi.portal.nbpod3-31-181-20030.4a.cmit.cloud', port=80): Max retries exceeded with url: /apisix/plugin/jwt/sign (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022EB7796BD0>: Failed to establish a new connection: [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。'))[0m
-None
