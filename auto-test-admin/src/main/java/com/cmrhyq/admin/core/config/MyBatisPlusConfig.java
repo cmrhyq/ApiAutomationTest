@@ -1,4 +1,4 @@
-package com.cmrhyq.admin.config;
+package com.cmrhyq.admin.core.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

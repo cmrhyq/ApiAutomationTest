@@ -49,3 +49,6 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.cmrhyq.friend.controller
+jwt:
+  secret: DEts.WVH.Yrg6Kn8
+  expiration: 3600000

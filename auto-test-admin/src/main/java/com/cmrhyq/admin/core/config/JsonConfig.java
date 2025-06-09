@@ -1,4 +1,4 @@
-package com.cmrhyq.admin.config;
+package com.cmrhyq.admin.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;

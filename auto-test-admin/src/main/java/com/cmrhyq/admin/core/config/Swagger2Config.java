@@ -1,4 +1,4 @@
-package com.cmrhyq.admin.config;
+package com.cmrhyq.admin.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
