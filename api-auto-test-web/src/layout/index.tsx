@@ -1,4 +1,4 @@
-import {useLocation, useNavigate, useRoutes} from "react-router-dom";
+import {useLocation, useNavigate, Outlet} from "react-router-dom";
 import {Content, Header} from "antd/es/layout/layout";
 import {Breadcrumb, Button, ConfigProvider, Layout, Menu, Spin, theme, Tooltip} from "antd";
 import {type JSX, Suspense} from "react";
@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import type {ItemType} from "antd/es/menu/interface";
 import * as React from "react";
-import {dynamicRoutes} from "../router";
 
 interface MenuItemType {
     key: string,
@@ -31,7 +30,6 @@ const menuRouter: ItemType<MenuItemType>[] = [
 function LayoutFrame() {
     const location = useLocation()
     const navigate = useNavigate();
-    const element = useRoutes(dynamicRoutes)
     const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken()
     const [primary] = React.useState("#1677ff");
 
@@ -96,7 +94,7 @@ function LayoutFrame() {
                                 Loading...
                             </Spin>
                         }>
-                            {element}
+                            <Outlet/>
                         </Suspense>
                     </div>
                 </Content>

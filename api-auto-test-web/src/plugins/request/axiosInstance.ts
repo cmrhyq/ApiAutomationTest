@@ -3,7 +3,13 @@ import qs from "qs";
 import { message } from 'antd';
 import {getToken} from "../auth.ts";
 import cache from "../cache.ts";
-import errorCode from "../../model/errorCode.ts";
+import errorCode from "../../types/errorCode.ts";
+
+interface requestObj {
+    url: string | undefined; // 请求地址
+    data: string; // 请求数据
+    time: number; // 请求时间
+}
 
 // 是否显示重新登录
 export let isReLogin = { show: false }
@@ -25,6 +31,7 @@ const axiosInstance = axios.create({
     // 超时
     timeout: 10000
 })
+
 
 axiosInstance.interceptors.request.use(
     (config) => {
