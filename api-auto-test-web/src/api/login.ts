@@ -17,3 +17,15 @@ export default function login(username: string, password: string, code:string, u
         data: data
     })
 }
+
+// 获取验证码
+export function getCodeImg() {
+    return axiosInstance({
+        url: '/captchaImage',
+        headers: {
+            isToken: false
+        },
+        method: 'get',
+        timeout: 20000
+    })
+}

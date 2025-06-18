@@ -33,8 +33,7 @@ const axiosInstance = axios.create({
 })
 
 
-axiosInstance.interceptors.request.use(
-    (config) => {
+axiosInstance.interceptors.request.use((config) => {
         // Add any request interceptors here
         // 是否需要设置 token
         const isToken = (config.headers || {}).isToken === false
@@ -74,16 +73,14 @@ axiosInstance.interceptors.request.use(
             }
         }
         return config;
-    },
-    (error) => {
+    }, (error) => {
         // Handle request error
         message.error(error.message, 3)
         return Promise.reject(error);
     }
 )
 
-axiosInstance.interceptors.response.use(
-    (response) => {
+axiosInstance.interceptors.response.use((response) => {
         const code = response.data.code || 200;
         const msg:string = errorCode[code] || response.data.msg || errorCode['default'];
         // 二进制数据则直接返回
@@ -110,8 +107,7 @@ axiosInstance.interceptors.response.use(
         } else {
             return response.data
         }
-    },
-    (error) => {
+    }, (error) => {
         let { message } = error
         if (message == "Network Error") {
             message = "后端接口连接异常"

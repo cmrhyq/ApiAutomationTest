@@ -1,49 +1,42 @@
 import {useLocation, useNavigate, Outlet} from "react-router-dom";
 import {Content, Header} from "antd/es/layout/layout";
-import {Breadcrumb, Button, ConfigProvider, Layout, Menu, Spin, theme, Tooltip} from "antd";
-import {type JSX, Suspense} from "react";
+import {Breadcrumb, Button, ConfigProvider, Layout, Spin, theme, Tooltip} from "antd";
+import {Suspense, useState} from "react";
 import {
-    HomeOutlined, RightSquareOutlined,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
     SettingOutlined
 } from "@ant-design/icons";
-import type {ItemType} from "antd/es/menu/interface";
-import * as React from "react";
+import DynamicMenu from "../components/DynamicMenu";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store";
 
-interface MenuItemType {
-    key: string,
-    icon: JSX.Element,
-    label: string,
-}
-
-const menuRouter: ItemType<MenuItemType>[] = [
-    {
-        key: "/index",
-        icon: <HomeOutlined />,
-        label: "首页"
-    }, {
-        key: "/login",
-        icon: <RightSquareOutlined />,
-        label: "登录"
-    }
-]
+import Sider from "antd/es/layout/Sider";
 
 function LayoutFrame() {
-    const location = useLocation()
+    const location = useLocation();
     const navigate = useNavigate();
-    const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken()
-    const [primary] = React.useState("#1677ff");
+    const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
+    const [collapsed, setCollapsed] = useState(false);
+    const [primary] = useState("#1677ff");
+    const { user } = useSelector((state: RootState) => state.user);
 
-    function clickMenu(e: { key: string }) {
-        navigate(e.key)
-    }
-
-    const breadcrumbItems = [
-        {
-            title: 'Home'
-        }, {
-            title: location.pathname.replace("/", ''),
-        }
-    ]
+    // 生成面包屑项
+    const generateBreadcrumbItems = () => {
+        const pathSnippets = location.pathname.split('/').filter(i => i);
+        const breadcrumbItems = [{ title: 'Home', path: '/index' }];
+        
+        let url = '';
+        pathSnippets.forEach(snippet => {
+            url += `/${snippet}`;
+            breadcrumbItems.push({
+                title: snippet.charAt(0).toUpperCase() + snippet.slice(1),
+                path: url
+            });
+        });
+        
+        return breadcrumbItems;
+    };
 
     return (
         <ConfigProvider
@@ -52,55 +45,69 @@ function LayoutFrame() {
                     colorPrimary: primary,
                 }
             }}>
-            <Layout style={{ height: '100%' }}>
-                <Header style={{ display: 'flex', alignItems: 'center' }}>
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={[location.pathname]}
-                        items={menuRouter}
-                        onClick={clickMenu}
-                        style={{ flex: 1, minWidth: 0 }}
-                    />
-                    <div style={{ justifyContent: "flex-end" }}>
-                        <Tooltip placement="bottom" title="设置">
-                            <Button
-                                shape="circle"
-                                color="cyan"
-                                variant="link"
-                                icon={<SettingOutlined style={{color: "#fff"}}/>}
-                                onClick={() => {
-                                    navigate('/setting')
-                                }}>
-                            </Button>
-                        </Tooltip>
-                    </div>
-                </Header>
-                <Content style={{ padding: '0 48px', height: '100%' }}>
-                    <Breadcrumb
-                        style={{ margin: '16px 0' }}
-                        items={breadcrumbItems}
-                    />
-                    <div
-                        style={{
-                            background: colorBgContainer,
-                            minHeight: 480,
-                            height: '90%',
-                            padding: 24,
-                            borderRadius: borderRadiusLG,
-                        }}>
-                        <Suspense fallback={
-                            <Spin tip="Loading" size="large" fullscreen>
-                                Loading...
-                            </Spin>
-                        }>
-                            <Outlet/>
-                        </Suspense>
-                    </div>
-                </Content>
+            <Layout style={{ minHeight: '100vh' }}>
+                <Sider 
+                    collapsible 
+                    collapsed={collapsed} 
+                    onCollapse={(value: any) => setCollapsed(value)}
+                >
+                    <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
+                    <DynamicMenu />
+                </Sider>
+                <Layout>
+                    <Header style={{ padding: 0, background: colorBgContainer, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{ fontSize: '16px', width: 64, height: 64 }}
+                        />
+                        <div style={{ marginRight: 20, display: 'flex', alignItems: 'center' }}>
+                            <span style={{ marginRight: 12 }}>
+                                {user?.nickname || user?.username}
+                            </span>
+                            <Tooltip placement="bottom" title="设置">
+                                <Button
+                                    shape="circle"
+                                    icon={<SettingOutlined />}
+                                    onClick={() => navigate('/setting')}
+                                />
+                            </Tooltip>
+                        </div>
+                    </Header>
+                    <Content style={{ margin: '0 16px' }}>
+                        {/*<Breadcrumb style={{ margin: '16px 0' }}>*/}
+                        {/*    {generateBreadcrumbItems().map((item, index) => (*/}
+                        {/*        <Breadcrumb.Item key={index}>*/}
+                        {/*            {index === generateBreadcrumbItems().length - 1 ? (*/}
+                        {/*                item.title*/}
+                        {/*            ) : (*/}
+                        {/*                <a onClick={() => navigate(item.path)}>{item.title}</a>*/}
+                        {/*            )}*/}
+                        {/*        </Breadcrumb.Item>*/}
+                        {/*    ))}*/}
+                        {/*</Breadcrumb>*/}
+                        <div
+                            style={{
+                                padding: 24,
+                                minHeight: 360,
+                                background: colorBgContainer,
+                                borderRadius: borderRadiusLG,
+                            }}
+                        >
+                            <Suspense fallback={
+                                <Spin tip="Loading" size="large">
+                                    Loading...
+                                </Spin>
+                            }>
+                                <Outlet />
+                            </Suspense>
+                        </div>
+                    </Content>
+                </Layout>
             </Layout>
         </ConfigProvider>
-    )
+    );
 }
 
-export default LayoutFrame
+export default LayoutFrame;
