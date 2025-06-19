@@ -85,7 +85,7 @@ axiosInstance.interceptors.response.use((response) => {
         const msg:string = errorCode[code] || response.data.msg || errorCode['default'];
         // 二进制数据则直接返回
         if (response.request.responseType ===  'blob' || response.request.responseType ===  'arraybuffer') {
-            return response.data
+            return response
         }
         if (code === 401){
             if(!isReLogin.show) {
@@ -105,7 +105,7 @@ axiosInstance.interceptors.response.use((response) => {
             message.error(msg, 3)
             return Promise.reject('error')
         } else {
-            return response.data
+            return response
         }
     }, (error) => {
         let { message } = error

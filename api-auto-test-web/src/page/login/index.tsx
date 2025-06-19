@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
-import { Form, Input, Button, Card, message, Row, Col, Typography, Spin } from "antd";
-import { UserOutlined, LockOutlined, SafetyOutlined } from "@ant-design/icons";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import {useState, useEffect} from "react";
+import {Form, Input, Button, Card, message, Row, Col, Typography, Spin} from "antd";
+import {UserOutlined, LockOutlined, SafetyOutlined} from "@ant-design/icons";
+import {useNavigate, useLocation} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import login from "../../api/login.ts";
-import { getCodeImg } from "../../api/login.ts";
-import { setToken } from "../../plugins/auth.ts";
-import { fetchUserInfo } from "../../store/slices/userSlice";
-import type { AppDispatch } from "../../store";
+import {getCodeImg} from "../../api/login.ts";
+import {setToken} from "../../plugins/auth.ts";
+import {fetchUserInfo} from "../../store/slices/userSlice";
+import type {AppDispatch} from "../../store";
 import "./login.css";
+import {AxiosResponse} from "axios";
 
-const { Title } = Typography;
+const {Title} = Typography;
 
 export default function Login() {
     const [form] = Form.useForm();
@@ -24,11 +25,11 @@ export default function Login() {
     // 获取验证码
     const getCaptcha = async () => {
         try {
-            const res = await getCodeImg();
+            const response: AxiosResponse<ImageResponse> = await getCodeImg();
             // Check if res and res.img exist before using them
-            if (res && res.img) {
-                setCaptchaImg("data:image/gif;base64," + res.img);
-                setUuid(res.uuid || "");
+            if (response && response.data.img) {
+                setCaptchaImg("data:image/gif;base64," + response.data.img);
+                setUuid(response.data.uuid || "");
             } else {
                 message.error("获取验证码失败: 无效的响应格式");
             }
@@ -47,31 +48,31 @@ export default function Login() {
     const handleLogin = async (values: any) => {
         try {
             setLoading(true);
-            const { username, password, captcha } = values;
-            const res = await login(username, password, captcha, uuid);
-            
+            const {username, password, captcha} = values;
+            const response: AxiosResponse<LoginResponse> = await login(username, password, captcha, uuid);
+
             // Check if res and res.token exist before using them
-            if (res && res.token) {
+            if (response && response.data.token) {
                 // 保存token
-                setToken(res.token);
+                setToken(response.data.token);
                 message.success("登录成功");
-                
+
                 // 获取用户信息
                 try {
                     await dispatch(fetchUserInfo());
-                    
+
                     // 跳转到首页或者来源页面
                     const from = location.state?.from?.pathname || "/index";
-                    navigate(from, { replace: true });
+                    navigate(from, {replace: true});
                 } catch (userInfoError) {
                     // Handle user info fetch error separately
                     console.error("Failed to fetch user info:", userInfoError);
                     message.warning("登录成功，但获取用户信息失败，部分功能可能受限");
                     // Still navigate to home page even if user info fetch fails
-                    navigate("/index", { replace: true });
+                    navigate("/index", {replace: true});
                 }
             } else {
-                throw new Error("登录失败: 无效的响应格式");
+                message.error("登录失败: 无效的响应格式");
             }
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : "登录失败，请重试";
@@ -86,7 +87,7 @@ export default function Login() {
     return (
         <div className="login-container">
             <div className="login-content">
-                <Card bordered={false} className="login-card">
+                <Card className="login-card">
                     <div className="login-header">
                         <Title level={2} className="login-title">API自动化测试平台</Title>
                     </div>
@@ -95,27 +96,27 @@ export default function Login() {
                             form={form}
                             name="login"
                             onFinish={handleLogin}
-                            initialValues={{ remember: true }}
+                            initialValues={{remember: true}}
                             size="large"
                         >
                             <Form.Item
                                 name="username"
-                                rules={[{ required: true, message: "请输入用户名" }]}
+                                rules={[{required: true, message: "请输入用户名"}]}
                             >
-                                <Input 
-                                    prefix={<UserOutlined />} 
-                                    placeholder="用户名" 
+                                <Input
+                                    prefix={<UserOutlined/>}
+                                    placeholder="用户名"
                                     autoComplete="off"
                                 />
                             </Form.Item>
 
                             <Form.Item
                                 name="password"
-                                rules={[{ required: true, message: "请输入密码" }]}
+                                rules={[{required: true, message: "请输入密码"}]}
                             >
-                                <Input.Password 
-                                    prefix={<LockOutlined />} 
-                                    placeholder="密码" 
+                                <Input.Password
+                                    prefix={<LockOutlined/>}
+                                    placeholder="密码"
                                     autoComplete="off"
                                 />
                             </Form.Item>
@@ -126,11 +127,11 @@ export default function Login() {
                                         <Form.Item
                                             name="captcha"
                                             noStyle
-                                            rules={[{ required: true, message: "请输入验证码" }]}
+                                            rules={[{required: true, message: "请输入验证码"}]}
                                         >
-                                            <Input 
-                                                prefix={<SafetyOutlined />} 
-                                                placeholder="验证码" 
+                                            <Input
+                                                prefix={<SafetyOutlined/>}
+                                                placeholder="验证码"
                                                 autoComplete="off"
                                             />
                                         </Form.Item>
@@ -138,10 +139,10 @@ export default function Login() {
                                     <Col span={8}>
                                         <div className="captcha-container" onClick={getCaptcha}>
                                             {captchaImg ? (
-                                                <img 
-                                                    src={captchaImg} 
-                                                    alt="验证码" 
-                                                    className="captcha-img" 
+                                                <img
+                                                    src={captchaImg}
+                                                    alt="验证码"
+                                                    className="captcha-img"
                                                 />
                                             ) : (
                                                 <div className="captcha-loading">加载中...</div>
@@ -152,10 +153,10 @@ export default function Login() {
                             </Form.Item>
 
                             <Form.Item>
-                                <Button 
-                                    type="primary" 
-                                    htmlType="submit" 
-                                    className="login-button" 
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="login-button"
                                     loading={loading}
                                     block
                                 >

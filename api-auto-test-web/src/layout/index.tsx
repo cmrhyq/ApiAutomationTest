@@ -1,7 +1,7 @@
 import {useLocation, useNavigate, Outlet} from "react-router-dom";
 import {Content, Header} from "antd/es/layout/layout";
 import {Breadcrumb, Button, ConfigProvider, Layout, Spin, theme, Tooltip} from "antd";
-import {Suspense, useState} from "react";
+import {Suspense, useEffect, useState} from "react";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -10,15 +10,15 @@ import {
 import DynamicMenu from "../components/DynamicMenu";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
-
 import Sider from "antd/es/layout/Sider";
 
 function LayoutFrame() {
     const location = useLocation();
     const navigate = useNavigate();
     const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     const [primary] = useState("#1677ff");
+    const [ breadcrumbItems, setBreadcrumbItems ] = useState<{ title: string, path: string }[]>([]);
     const { user } = useSelector((state: RootState) => state.user);
 
     // 生成面包屑项
@@ -34,9 +34,13 @@ function LayoutFrame() {
                 path: url
             });
         });
-        
-        return breadcrumbItems;
+        setBreadcrumbItems(breadcrumbItems);
     };
+
+    // 初始化获取验证码
+    useEffect(() => {
+        generateBreadcrumbItems();
+    }, []);
 
     return (
         <ConfigProvider
@@ -46,11 +50,7 @@ function LayoutFrame() {
                 }
             }}>
             <Layout style={{ minHeight: '100vh' }}>
-                <Sider 
-                    collapsible 
-                    collapsed={collapsed} 
-                    onCollapse={(value: any) => setCollapsed(value)}
-                >
+                <Sider collapsed={collapsed}>
                     <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
                     <DynamicMenu />
                 </Sider>
@@ -76,17 +76,11 @@ function LayoutFrame() {
                         </div>
                     </Header>
                     <Content style={{ margin: '0 16px' }}>
-                        {/*<Breadcrumb style={{ margin: '16px 0' }}>*/}
-                        {/*    {generateBreadcrumbItems().map((item, index) => (*/}
-                        {/*        <Breadcrumb.Item key={index}>*/}
-                        {/*            {index === generateBreadcrumbItems().length - 1 ? (*/}
-                        {/*                item.title*/}
-                        {/*            ) : (*/}
-                        {/*                <a onClick={() => navigate(item.path)}>{item.title}</a>*/}
-                        {/*            )}*/}
-                        {/*        </Breadcrumb.Item>*/}
-                        {/*    ))}*/}
-                        {/*</Breadcrumb>*/}
+                        {/*TODO 点击有问题*/}
+                        <Breadcrumb
+                            style={{ margin: '16px 0' }}
+                            items={breadcrumbItems}>
+                        </Breadcrumb>
                         <div
                             style={{
                                 padding: 24,
