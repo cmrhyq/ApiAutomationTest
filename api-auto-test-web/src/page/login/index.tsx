@@ -5,7 +5,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import login from "../../api/login.ts";
 import {getCodeImg} from "../../api/login.ts";
-import {setToken} from "../../plugins/auth.ts";
+import {setToken} from "../../plugins/cache/tokenCache.ts";
 import {fetchUserInfo} from "../../store/slices/userSlice";
 import type {AppDispatch} from "../../store";
 import "./login.css";

@@ -1,25 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUserInfo } from '../../api/system/user';
-import { getToken, removeToken } from '../../plugins/auth';
-import type { User } from '../../types/auth';
-
-interface UserState {
-  user: User | null;
-  token: string | null;
-  roles: string[];
-  permissions: string[];
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: UserState = {
-  user: null,
-  token: getToken() || null,
-  roles: [],
-  permissions: [],
-  loading: false,
-  error: null,
-};
+import { removeToken } from '../../plugins/cache/tokenCache.ts';
+import {initialState} from "./model.ts";
 
 // 获取用户信息的异步action
 export const fetchUserInfo = createAsyncThunk(
@@ -37,10 +19,7 @@ export const fetchUserInfo = createAsyncThunk(
       return response.data;
     } catch (error: unknown) {
       // Improved error handling
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : '获取用户信息失败: 未知错误';
-      
+      const errorMessage = error instanceof Error ? error.message : '获取用户信息失败: 未知错误';
       console.error('Failed to fetch user info:', error);
       return rejectWithValue(errorMessage);
     }

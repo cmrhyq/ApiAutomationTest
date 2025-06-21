@@ -1,9 +1,9 @@
 import axios from "axios";
 import qs from "qs";
 import { message } from 'antd';
-import {getToken} from "../auth.ts";
-import cache from "../cache.ts";
-import errorCode from "../../types/errorCode.ts";
+import {getToken} from "../cache/tokenCache.ts";
+import cache from "../cache/cache.ts";
+import errorCode from "./model.ts";
 
 interface requestObj {
     url: string | undefined; // 请求地址

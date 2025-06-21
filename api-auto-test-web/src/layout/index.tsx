@@ -1,46 +1,23 @@
-import {useLocation, useNavigate, Outlet} from "react-router-dom";
+import {useNavigate, Outlet} from "react-router-dom";
 import {Content, Header} from "antd/es/layout/layout";
-import {Breadcrumb, Button, ConfigProvider, Layout, Spin, theme, Tooltip} from "antd";
-import {Suspense, useEffect, useState} from "react";
+import {Button, ConfigProvider, Layout, Spin, theme, Tooltip} from "antd";
+import {Suspense, useState} from "react";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     SettingOutlined
 } from "@ant-design/icons";
-import DynamicMenu from "../components/DynamicMenu";
+import DynamicMenu from "../components/menu/DynamicMenu.tsx";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
 import Sider from "antd/es/layout/Sider";
 
 function LayoutFrame() {
-    const location = useLocation();
     const navigate = useNavigate();
     const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
-    const [collapsed, setCollapsed] = useState(true);
+    const [collapsed, setCollapsed] = useState(false);
     const [primary] = useState("#1677ff");
-    const [ breadcrumbItems, setBreadcrumbItems ] = useState<{ title: string, path: string }[]>([]);
     const { user } = useSelector((state: RootState) => state.user);
-
-    // 生成面包屑项
-    const generateBreadcrumbItems = () => {
-        const pathSnippets = location.pathname.split('/').filter(i => i);
-        const breadcrumbItems = [{ title: 'Home', path: '/index' }];
-        
-        let url = '';
-        pathSnippets.forEach(snippet => {
-            url += `/${snippet}`;
-            breadcrumbItems.push({
-                title: snippet.charAt(0).toUpperCase() + snippet.slice(1),
-                path: url
-            });
-        });
-        setBreadcrumbItems(breadcrumbItems);
-    };
-
-    // 初始化获取验证码
-    useEffect(() => {
-        generateBreadcrumbItems();
-    }, []);
 
     return (
         <ConfigProvider
@@ -50,7 +27,7 @@ function LayoutFrame() {
                 }
             }}>
             <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsed={collapsed}>
+                <Sider collapsed={collapsed} defaultCollapsed={false}>
                     <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
                     <DynamicMenu />
                 </Sider>
@@ -75,12 +52,7 @@ function LayoutFrame() {
                             </Tooltip>
                         </div>
                     </Header>
-                    <Content style={{ margin: '0 16px' }}>
-                        {/*TODO 点击有问题*/}
-                        <Breadcrumb
-                            style={{ margin: '16px 0' }}
-                            items={breadcrumbItems}>
-                        </Breadcrumb>
+                    <Content style={{ margin: '16px 16px' }}>
                         <div
                             style={{
                                 padding: 24,

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Menu } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { getRouters } from '../api/system/menu';
-import type { MenuItem } from '../types/auth';
+import {useNavigate, useLocation} from 'react-router-dom';
+import { getRouters } from '../../api/system/menu.ts';
+import type {DynamicIconProps, MenuItem} from './model.ts';
 import * as AntdIcons from '@ant-design/icons';
 
 const DynamicMenu: React.FC = () => {
@@ -11,23 +11,19 @@ const DynamicMenu: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchMenuData = async () => {
-      try {
-        const response = await getRouters();
-        setMenuItems(response.data.data);
-      } catch (error) { // 添加类型注解
-        console.error('获取菜单失败:', error);
-      }
-    };
-
     fetchMenuData();
   }, []);
 
-  interface DynamicIconProps {
-    iconName: string;
-    style?: React.CSSProperties;
-    className?: string;
-  }
+  const fetchMenuData = async () => {
+    try {
+      const response = await getRouters();
+      const data = response.data.data
+      setMenuItems(data);
+    } catch (error) { // 添加类型注解
+      console.error('获取菜单失败:', error);
+      navigate("/login")
+    }
+  };
 
   /**
    * 动态加载图标
@@ -49,9 +45,14 @@ const DynamicMenu: React.FC = () => {
    * 递归构建菜单项
    * @param items
    */
-  const buildMenuItems = (items: MenuItem[]): MenuItem[] => {
+  const buildMenuItems = (items: MenuItem[]): (null | {
+    key: string;
+    icon: React.JSX.Element;
+    label: string | undefined;
+    children: MenuItem[]
+  } | { key: string; icon: React.JSX.Element; label: string | undefined })[] => {
     return items.map((item) => {
-      if (item.hidden) return null;
+      if (!item || !item.path) return null;
 
       const iconName: string = item.meta?.icon || 'QuestionOutlined';
 
@@ -59,7 +60,7 @@ const DynamicMenu: React.FC = () => {
         return {
           key: item.path,
           icon: <DynamicIcon iconName={iconName} />,
-          label: item.name,
+          label: item.meta?.title,
           children: buildMenuItems(item.children),
         };
       }
@@ -67,7 +68,7 @@ const DynamicMenu: React.FC = () => {
       return {
         key: item.path,
         icon: <DynamicIcon iconName={iconName} />,
-        label: item.name,
+        label: item.meta?.title,
       };
     }).filter(Boolean);
   };

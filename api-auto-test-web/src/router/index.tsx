@@ -3,6 +3,7 @@ import * as React from "react";
 const Layout = React.lazy(() => import("../layout"))
 const Login = React.lazy(() => import("../page/login"));
 const Index = React.lazy(() => import("../page/index"));
+const User = React.lazy(() => import("../page/system/user"));
 const NotAuthorized = React.lazy(() => import("../page/error/notAuthorized"))
 const NotFound = React.lazy(() => import("../page/error/notFound"))
 const ServerError = React.lazy(() => import("../page/error/serverError"));
@@ -39,8 +40,14 @@ export const routes: RouteConfig[] = [
                 path: "index",
                 component: <Index />,
                 meta: {
+                    requiresAuth: false
+                }
+            }, {
+                path: "user",
+                component: <User/>,
+                meta: {
                     requiresAuth: true,
-                    permissions: ["system:index"]
+                    permissions: ["system:user:list"],
                 }
             }
         ]
