@@ -8,13 +8,22 @@ export default function ServerError(){
         navigate(-1);
     }
 
+    const toLogin = () => {
+        navigate('/login');
+    }
+
     return (
         <div>
             <Result
                 status="500"
-                title="500c"
+                title="500"
                 subTitle="Sorry, something went wrong."
-                extra={<Button type="primary" onClick={previousPage}>Back Home</Button>}
+                extra={
+                    <div>
+                        <Button type="dashed" onClick={toLogin} style={{marginRight: "10px"}}>Back Login</Button>
+                        <Button type="primary" onClick={previousPage}>Previous page</Button>
+                    </div>
+                }
             />
         </div>
     )

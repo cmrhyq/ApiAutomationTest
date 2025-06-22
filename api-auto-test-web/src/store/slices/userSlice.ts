@@ -49,7 +49,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserInfo.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
         // Add null checking before accessing roles
         state.roles = action.payload.roles ? action.payload.roles.map((role: any) => role.key) : [];
         // Add null checking for permissions as well

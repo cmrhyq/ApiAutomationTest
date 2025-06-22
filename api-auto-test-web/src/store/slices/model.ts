@@ -2,8 +2,8 @@ import {getToken} from "../../plugins/cache/tokenCache.ts";
 
 export interface User {
     id: number;
-    username: string;
-    nickname: string;
+    userName: string;
+    nickName: string;
     roles: Role[];
     permissions: string[];
 }
