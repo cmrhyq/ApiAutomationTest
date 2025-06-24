@@ -79,7 +79,7 @@ const DynamicMenu: React.FC = () => {
 
   return (
     <Menu
-      theme="dark"
+      theme="light"
       mode="inline"
       selectedKeys={[location.pathname]}
       defaultOpenKeys={['/' + location.pathname.split('/')[1]]}

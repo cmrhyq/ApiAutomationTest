@@ -24,10 +24,15 @@ function LayoutFrame() {
             theme={{
                 token: {
                     colorPrimary: primary,
+                },
+                components: {
+                    Layout: {
+                        bodyBg: "#F7FAFC",
+                    }
                 }
             }}>
             <Layout style={{minHeight: '100vh'}}>
-                <Sider theme={"dark"} collapsed={collapsed} defaultCollapsed={false}>
+                <Sider theme={"light"} collapsed={collapsed} defaultCollapsed={false}>
                     <div style={{height: 32, margin: 16}}>
                         <Image alt="logo" src={"/src/assets/easyapi-logo.svg"} preview={false} height={32}/>
                     </div>
@@ -61,7 +66,7 @@ function LayoutFrame() {
                                     size="large"
                                     color="default"
                                     variant="text"
-                                    icon={<UserOutlined />}
+                                    icon={<UserOutlined/>}
                                     onClick={() => navigate('/')}>
                                     <span style={{marginRight: 12}}>
                                         {user?.nickName || user?.userName}
