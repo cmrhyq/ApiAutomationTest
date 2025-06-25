@@ -12,6 +12,7 @@ import {useSelector} from "react-redux";
 import type {RootState} from "../../store";
 
 const {Header, Content, Sider} = Layout;
+type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
 function LayoutFrame() {
     const navigate = useNavigate();
@@ -20,14 +21,40 @@ function LayoutFrame() {
     const [bodyBg] = useState("#F7FAFC");
     const [collapsed, setCollapsed] = useState(false);
     const {user} = useSelector((state: RootState) => state.user);
-    const [tabItem, setTabItem] = useState([{
-      label: "index",
-      key: "/index",
-    }])
+    const [tabItem, setTabItem] = useState([
+        {
+          label: "首页",
+          key: "/index",
+          closable: false
+        },{
+            label: "用户",
+            key: "/user",
+        }
+    ])
     const [activeKey, setActiveKey] = useState(tabItem[0].key);
 
     const onChange = (key: string) => {
       setActiveKey(key);
+    };
+
+    const removeTab = (targetKey: TargetKey) => {
+        let newActiveKey = activeKey;
+        let lastIndex = -1;
+        tabItem.forEach((item, i) => {
+            if (item.key === targetKey) {
+                lastIndex = i - 1;
+            }
+        });
+        const newPanes = tabItem.filter((item) => item.key !== targetKey);
+        if (newPanes.length && newActiveKey === targetKey) {
+            if (lastIndex >= 0) {
+                newActiveKey = newPanes[lastIndex].key;
+            } else {
+                newActiveKey = newPanes[0].key;
+            }
+        }
+        setTabItem(newPanes);
+        setActiveKey(newActiveKey);
     };
 
     return (
@@ -97,21 +124,21 @@ function LayoutFrame() {
                       onChange={onChange}
                       activeKey={activeKey}
                       type="editable-card"
-                      // onEdit={onEdit}
+                      onEdit={removeTab}
                       items={tabItem}
                     />
                     <Content
-                      className="box-shadow-3"
                       style={{
                         margin: '0 16px',
                         borderRadius: "0 0 8px 8px",
                       }}>
                         <div style={{
                             padding: 24,
-                            minHeight: "100%",
+                            minHeight: "95%",
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
-                        }}>
+                        }}
+                             className="box-shadow-3">
                             <Suspense fallback={
                                 <Spin tip="Loading" size="large">
                                     Loading...
