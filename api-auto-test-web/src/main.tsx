@@ -10,14 +10,12 @@ import { store } from './store';
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
+            <BrowserRouter
+              future={{
+                v7_relativeSplatPath: true,
+              }}>
                 <App/>
             </BrowserRouter>
         </Provider>
     </StrictMode>,
 )
-
-// Use contextBridge
-// window.ipcRenderer.on('main-process-message', (_event, message) => {
-//     console.log(message)
-// })

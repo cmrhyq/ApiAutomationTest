@@ -1,6 +1,6 @@
 import "../../assets/css/Common.css"
 import {useNavigate, Outlet} from "react-router-dom";
-import {Button, ConfigProvider, Image, Layout, Spin, theme, Tooltip} from "antd";
+import {Button, ConfigProvider, Image, Layout, Spin, Tabs, theme, Tooltip} from "antd";
 import {Suspense, useState} from "react";
 import {
     MenuFoldOutlined,
@@ -16,9 +16,19 @@ const {Header, Content, Sider} = Layout;
 function LayoutFrame() {
     const navigate = useNavigate();
     const {token: {colorBgContainer, borderRadiusLG}} = theme.useToken();
-    const [collapsed, setCollapsed] = useState(false);
     const [primary] = useState("#1296db");
+    const [bodyBg] = useState("#F7FAFC");
+    const [collapsed, setCollapsed] = useState(false);
     const {user} = useSelector((state: RootState) => state.user);
+    const [tabItem, setTabItem] = useState([{
+      label: "index",
+      key: "/index",
+    }])
+    const [activeKey, setActiveKey] = useState(tabItem[0].key);
+
+    const onChange = (key: string) => {
+      setActiveKey(key);
+    };
 
     return (
         <ConfigProvider
@@ -28,7 +38,7 @@ function LayoutFrame() {
                 },
                 components: {
                     Layout: {
-                        bodyBg: "#F7FAFC",
+                        bodyBg: bodyBg,
                     }
                 }
             }}>
@@ -82,10 +92,18 @@ function LayoutFrame() {
                             </Tooltip>
                         </div>
                     </Header>
+                    <Tabs
+                      hideAdd
+                      onChange={onChange}
+                      activeKey={activeKey}
+                      type="editable-card"
+                      // onEdit={onEdit}
+                      items={tabItem}
+                    />
                     <Content
                       className="box-shadow-3"
                       style={{
-                        margin: '16px 16px',
+                        margin: '0 16px',
                         borderRadius: "0 0 8px 8px",
                       }}>
                         <div style={{

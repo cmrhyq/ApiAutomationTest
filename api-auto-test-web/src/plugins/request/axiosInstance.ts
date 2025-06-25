@@ -90,7 +90,7 @@ axiosInstance.interceptors.response.use((response) => {
         if (code === 401){
             if(!isReLogin.show) {
                 isReLogin.show = true;
-                message.error(msg, 3).then(() => {
+                message.error("无效会话或者登录已过期。", 3).then(() => {
                     isReLogin.show = false;
                 });
             }

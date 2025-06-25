@@ -7,3 +7,19 @@
 .box-shadow-3 {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
 }
+
+.background-gradient-pink {
+    background-image: linear-gradient(to right bottom, rgb(236, 71, 134), rgb(185, 85, 164));
+}
+
+.background-gradient-purple {
+    background-image: linear-gradient(to right bottom, rgb(134, 94, 192), rgb(81, 68, 180));
+}
+
+.background-gradient-blue {
+    background-image: linear-gradient(to right bottom, rgb(86, 205, 243), rgb(113, 157, 227));
+}
+
+.background-gradient-yellow {
+    background-image: linear-gradient(to right bottom, rgb(252, 188, 37), rgb(246, 128, 87));
+}
