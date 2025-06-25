@@ -62,7 +62,7 @@ export default function Login() {
                     await dispatch(fetchUserInfo());
 
                     // 跳转到首页或者来源页面
-                    const from = location.state?.from?.pathname || "/index";
+                    const from = location.state?.from?.pathname !== "/" ? location.state?.from?.pathname : "/index";
                     navigate(from, {replace: true});
                 } catch (userInfoError) {
                     // Handle user info fetch error separately

@@ -1,3 +1,4 @@
+import "../../assets/css/Common.css"
 import {useNavigate, Outlet} from "react-router-dom";
 import {Button, ConfigProvider, Image, Layout, Spin, theme, Tooltip} from "antd";
 import {Suspense, useState} from "react";
@@ -32,20 +33,26 @@ function LayoutFrame() {
                 }
             }}>
             <Layout style={{minHeight: '100vh'}}>
-                <Sider theme={"light"} collapsed={collapsed} defaultCollapsed={false}>
+                <Sider
+                  theme={"light"}
+                  collapsed={collapsed}
+                  defaultCollapsed={false}
+                  className="box-shadow-2">
                     <div style={{height: 32, margin: 16}}>
-                        <Image alt="logo" src={"/src/assets/easyapi-logo.svg"} preview={false} height={32}/>
+                        <Image alt="logo" src={"/src/assets/images/easyapi-logo.svg"} preview={false} height={32}/>
                     </div>
                     <DynamicMenu/>
                 </Sider>
                 <Layout>
-                    <Header style={{
+                    <Header
+                      className="box-shadow-1"
+                      style={{
                         padding: 0,
                         background: colorBgContainer,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between'
-                    }}>
+                      }}>
                         <Button
                             size="large"
                             type="text"
@@ -75,10 +82,15 @@ function LayoutFrame() {
                             </Tooltip>
                         </div>
                     </Header>
-                    <Content style={{margin: '16px 16px'}}>
+                    <Content
+                      className="box-shadow-3"
+                      style={{
+                        margin: '16px 16px',
+                        borderRadius: "0 0 8px 8px",
+                      }}>
                         <div style={{
                             padding: 24,
-                            minHeight: 360,
+                            minHeight: "100%",
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}>

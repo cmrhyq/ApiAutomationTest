@@ -81,8 +81,8 @@ const DynamicMenu: React.FC = () => {
     <Menu
       theme="light"
       mode="inline"
-      selectedKeys={[location.pathname]}
-      defaultOpenKeys={['/' + location.pathname.split('/')[1]]}
+      selectedKeys={[location.pathname !== "/" ? location.pathname : "/index"]}
+      defaultOpenKeys={['/' + (location.pathname !== "/" ? location.pathname.split('/')[1] : "index")]}
       items={buildMenuItems(menuItems)}
       onClick={handleMenuClick}
     />
