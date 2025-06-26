@@ -1,13 +1,15 @@
-import "../../assets/css/Common.css"
+import "./index.css";
+import "@/assets/css/Common.css";
 import {useNavigate, Outlet} from "react-router-dom";
 import {Button, ConfigProvider, Image, Layout, Spin, Tabs, theme, Tooltip} from "antd";
 import {Suspense, useState} from "react";
 import {
+    DashboardOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     SettingOutlined, UserOutlined
 } from "@ant-design/icons";
-import DynamicMenu from "../menu/DynamicMenu.tsx";
+import DynamicMenu from "./components/menu/DynamicMenu.tsx";
 import {useSelector} from "react-redux";
 import type {RootState} from "../../store";
 
@@ -18,17 +20,20 @@ function LayoutFrame() {
     const navigate = useNavigate();
     const {token: {colorBgContainer, borderRadiusLG}} = theme.useToken();
     const [primary] = useState("#1296db");
-    const [bodyBg] = useState("#F7FAFC");
+    const [bodyBg] = useState("#f8f8fa");
     const [collapsed, setCollapsed] = useState(false);
     const {user} = useSelector((state: RootState) => state.user);
     const [tabItem, setTabItem] = useState([
         {
+          icon: <DashboardOutlined />,
           label: "首页",
           key: "/index",
           closable: false
         },{
+            icon: <UserOutlined />,
             label: "用户",
             key: "/user",
+            closable: true
         }
     ])
     const [activeKey, setActiveKey] = useState(tabItem[0].key);
@@ -66,7 +71,11 @@ function LayoutFrame() {
                 components: {
                     Layout: {
                         bodyBg: bodyBg,
-                    }
+                    },
+                    Tabs: {
+                        cardBg: '#fff',
+                        itemHoverColor: "#000"
+                    },
                 }
             }}>
             <Layout style={{minHeight: '100vh'}}>
@@ -88,7 +97,8 @@ function LayoutFrame() {
                         background: colorBgContainer,
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        zIndex: 2
                       }}>
                         <Button
                             size="large"
@@ -126,6 +136,10 @@ function LayoutFrame() {
                       type="editable-card"
                       onEdit={removeTab}
                       items={tabItem}
+                      tabBarStyle={{
+                          backgroundColor: colorBgContainer,
+                          zIndex: 2
+                      }}
                     />
                     <Content
                       style={{
@@ -134,7 +148,7 @@ function LayoutFrame() {
                       }}>
                         <div style={{
                             padding: 24,
-                            minHeight: "95%",
+                            minHeight: "97%",
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}
