@@ -6,7 +6,7 @@ import {useDispatch} from "react-redux";
 import login from "../../api/login.ts";
 import {getCodeImg} from "../../api/login.ts";
 import {setToken} from "../../plugins/cache/tokenCache.ts";
-import {fetchUserInfo} from "../../store/slices/userSlice";
+import {fetchUserInfo} from "../../store/reducers/user/userSlice";
 import type {AppDispatch} from "../../store";
 import "./login.css";
 import {AxiosResponse} from "axios";
@@ -62,8 +62,12 @@ export default function Login() {
                     await dispatch(fetchUserInfo());
 
                     // 跳转到首页或者来源页面
-                    const from = location.state?.from?.pathname !== "/" ? location.state?.from?.pathname : "/index";
-                    navigate(from, {replace: true});
+                    // 加判断是当获取到的来源页面是 undefined 或者为 / 的时候给他替换为 /index
+                    let from_pathname = location.state?.from?.pathname;
+                    if (!from_pathname || from_pathname.length < 2) {
+                        from_pathname = "/index"
+                    }
+                    navigate(from_pathname, {replace: true});
                 } catch (userInfoError) {
                     // Handle user info fetch error separately
                     console.error("Failed to fetch user info:", userInfoError);
