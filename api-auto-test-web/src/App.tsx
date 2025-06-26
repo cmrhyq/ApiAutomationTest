@@ -7,10 +7,12 @@ import {fetchUserInfo} from './store/reducers/user/userSlice';
 import {getToken} from './plugins/cache/tokenCache.ts';
 import type {AppDispatch, RootState} from './store';
 import Auth from "./plugins/auth/auth.tsx";
+import {setTab} from './store/reducers/tabs/tabsSlice';
 
 function App() {
     const dispatch = useDispatch<AppDispatch>();
     const {user} = useSelector((state: RootState) => state.user);
+    const {tabs} = useSelector((state: RootState) => state.tabs);
     const token = getToken();
 
     useEffect(() => {
@@ -18,6 +20,19 @@ function App() {
             dispatch(fetchUserInfo());
         }
     }, [dispatch, token, user]);
+
+    // 初始化标签页，确保首页标签页存在
+    useEffect(() => {
+        // 如果没有首页标签，添加首页标签
+        if (token && user && !tabs.some(tab => tab.key === '/index')) {
+            dispatch(setTab({
+                icon: "DashboardOutlined",
+                label: "首页",
+                key: "/index",
+                closable: false
+            }));
+        }
+    }, [dispatch, token, user, tabs]);
 
     const renderRoutes = (routes: any) => {
         return routes.map((route: any) => {

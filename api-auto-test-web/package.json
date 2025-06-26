@@ -26,7 +26,8 @@
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "6",
-    "reset-css": "^5.0.2"
+    "reset-css": "^5.0.2",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",

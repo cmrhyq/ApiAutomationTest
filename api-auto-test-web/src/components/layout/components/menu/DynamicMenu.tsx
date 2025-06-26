@@ -4,11 +4,16 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import { getRouters } from '../../../../api/system/menu.ts';
 import type {DynamicIconProps, MenuItem} from './model.ts';
 import * as AntdIcons from '@ant-design/icons';
+import {useDispatch, useSelector} from "react-redux";
+import {setTab} from "../../../../store/reducers/tabs/tabsSlice";
+import type {RootState} from "../../../../store";
 
 const DynamicMenu: React.FC = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const {tabs} = useSelector((state: RootState) => state.tabs);
 
   useEffect(() => {
     fetchMenuData();
@@ -75,6 +80,32 @@ const DynamicMenu: React.FC = () => {
 
   const handleMenuClick = ({ key }: {key: string}) => {
     navigate(key);
+    
+    // 查找菜单项，获取标题和图标
+    const findMenuItem = (items: MenuItem[], targetKey: string): MenuItem | null => {
+      for (const item of items) {
+        if (item.path === targetKey) {
+          return item;
+        }
+        if (item.children && item.children.length > 0) {
+          const found = findMenuItem(item.children, targetKey);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const menuItem = findMenuItem(menuItems, key);
+
+    // 如果找到菜单项，并且标签页中不存在该路径，则添加标签页
+    if (menuItem && !tabs.some(tab => tab.key === key)) {
+      dispatch(setTab({
+        icon: menuItem.meta?.icon || "QuestionCircleOutlined",
+        label: menuItem.meta?.title || "未命名",
+        key: key,
+        closable: key !== "/index" // 首页不可关闭
+      }));
+    }
   };
 
   return (
@@ -82,7 +113,7 @@ const DynamicMenu: React.FC = () => {
       theme="light"
       mode="inline"
       selectedKeys={[location.pathname !== "/" ? location.pathname : "/index"]}
-      defaultOpenKeys={['/' + (location.pathname !== "/" ? location.pathname.split('/')[1] : "index")]}
+      defaultOpenKeys={[location.pathname !== "/" ? location.pathname : "/index"]}
       items={buildMenuItems(menuItems)}
       onClick={handleMenuClick}
     />

@@ -1,10 +1,9 @@
 import "./index.css";
 import "@/assets/css/Common.css";
 import {useNavigate, Outlet} from "react-router-dom";
-import {Button, ConfigProvider, Image, Layout, Spin, Tabs, theme, Tooltip} from "antd";
+import {Button, ConfigProvider, Image, Layout, Spin, theme, Tooltip} from "antd";
 import {Suspense, useState} from "react";
 import {
-    DashboardOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     SettingOutlined, UserOutlined
@@ -12,9 +11,9 @@ import {
 import DynamicMenu from "./components/menu/DynamicMenu.tsx";
 import {useSelector} from "react-redux";
 import type {RootState} from "../../store";
+import DynamicTabs from "./components/tabs";
 
 const {Header, Content, Sider} = Layout;
-type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
 function LayoutFrame() {
     const navigate = useNavigate();
@@ -23,44 +22,6 @@ function LayoutFrame() {
     const [bodyBg] = useState("#f8f8fa");
     const [collapsed, setCollapsed] = useState(false);
     const {user} = useSelector((state: RootState) => state.user);
-    const [tabItem, setTabItem] = useState([
-        {
-          icon: <DashboardOutlined />,
-          label: "首页",
-          key: "/index",
-          closable: false
-        },{
-            icon: <UserOutlined />,
-            label: "用户",
-            key: "/user",
-            closable: true
-        }
-    ])
-    const [activeKey, setActiveKey] = useState(tabItem[0].key);
-
-    const onChange = (key: string) => {
-      setActiveKey(key);
-    };
-
-    const removeTab = (targetKey: TargetKey) => {
-        let newActiveKey = activeKey;
-        let lastIndex = -1;
-        tabItem.forEach((item, i) => {
-            if (item.key === targetKey) {
-                lastIndex = i - 1;
-            }
-        });
-        const newPanes = tabItem.filter((item) => item.key !== targetKey);
-        if (newPanes.length && newActiveKey === targetKey) {
-            if (lastIndex >= 0) {
-                newActiveKey = newPanes[lastIndex].key;
-            } else {
-                newActiveKey = newPanes[0].key;
-            }
-        }
-        setTabItem(newPanes);
-        setActiveKey(newActiveKey);
-    };
 
     return (
         <ConfigProvider
@@ -129,18 +90,7 @@ function LayoutFrame() {
                             </Tooltip>
                         </div>
                     </Header>
-                    <Tabs
-                      hideAdd
-                      onChange={onChange}
-                      activeKey={activeKey}
-                      type="editable-card"
-                      onEdit={removeTab}
-                      items={tabItem}
-                      tabBarStyle={{
-                          backgroundColor: colorBgContainer,
-                          zIndex: 2
-                      }}
-                    />
+                    <DynamicTabs/>
                     <Content
                       style={{
                         margin: '0 16px',
