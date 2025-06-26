@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Menu } from 'antd';
 import {useNavigate, useLocation} from 'react-router-dom';
-import { getRouters } from '../../api/system/menu.ts';
+import { getRouters } from '../../../../api/system/menu.ts';
 import type {DynamicIconProps, MenuItem} from './model.ts';
 import * as AntdIcons from '@ant-design/icons';
 
