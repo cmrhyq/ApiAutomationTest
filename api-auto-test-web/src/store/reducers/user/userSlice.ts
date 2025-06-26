@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUserInfo } from '../../api/system/user';
-import { removeToken } from '../../plugins/cache/tokenCache.ts';
+import { getUserInfo } from '../../../api/system/user.ts';
+import { removeToken } from '../../../plugins/cache/tokenCache.ts';
 import {initialState} from "./model.ts";
 
 // 获取用户信息的异步action

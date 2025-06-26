@@ -1,4 +1,4 @@
-import {getToken} from "../../plugins/cache/tokenCache.ts";
+import {getToken} from "../../../plugins/cache/tokenCache.ts";
 
 export interface User {
     id: number;

@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {routes} from './router';
-import {fetchUserInfo} from './store/slices/userSlice';
+import {fetchUserInfo} from './store/reducers/user/userSlice';
 import {getToken} from './plugins/cache/tokenCache.ts';
 import type {AppDispatch, RootState} from './store';
 import Auth from "./plugins/auth/auth.tsx";
