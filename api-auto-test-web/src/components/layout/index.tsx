@@ -18,7 +18,7 @@ const {Header, Content, Sider} = Layout;
 function LayoutFrame() {
     const navigate = useNavigate();
     const {token: {colorBgContainer, borderRadiusLG}} = theme.useToken();
-    const [primary] = useState("#1296db");
+    const [primary] = useState("#0277ef");
     const [bodyBg] = useState("#f8f8fa");
     const [collapsed, setCollapsed] = useState(false);
     const {user} = useSelector((state: RootState) => state.user);
@@ -44,7 +44,10 @@ function LayoutFrame() {
                   theme={"light"}
                   collapsed={collapsed}
                   defaultCollapsed={false}
-                  className="box-shadow-2">
+                  className="box-shadow-2"
+                  style={{
+                      zIndex: 3,
+                  }}>
                     <div style={{height: 32, margin: 16}}>
                         <Image alt="logo" src={"/src/assets/images/easyapi-logo.svg"} preview={false} height={32}/>
                     </div>

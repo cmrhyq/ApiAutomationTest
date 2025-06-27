@@ -97,8 +97,6 @@ const DynamicMenu: React.FC = () => {
 
     const menuItem = findMenuItem(menuItems, key);
 
-    console.log(menuItem);
-    console.log(key)
     // 如果找到菜单项，并且标签页中不存在该路径，则添加标签页
     if (menuItem && !tabs.some(tab => tab.key === "/" + key)) {
       dispatch(setTab({
