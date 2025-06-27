@@ -90,7 +90,7 @@ const DynamicTabs: React.FC = () => {
             tabBarStyle={{
                 backgroundColor: colorBgContainer,
                 zIndex: 1,
-                padding: "0 5px",
+                padding: "10px 5px 0 5px",
             }}
         />
     );

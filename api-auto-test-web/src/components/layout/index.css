@@ -4,3 +4,43 @@
 .ant-tabs-tab:hover {
     background-color: #dee1e6 !important;
 }
+
+/* 覆盖非激活标签的样式 */
+.ant-tabs-tab {
+    padding: 10px 20px; /* 调整内边距 */
+    border-radius: 8px 8px 0 0; /* 圆角，如果整个tab有背景色 */
+    transition: all 0.3s ease; /* 添加过渡效果 */
+    color: #666; /* 非激活标签文本颜色 */
+    background-color: transparent; /* 非激活标签透明背景 */
+    border: none !important; /* 移除边框 */
+    /* 移除 Ant Design 默认的下划线 */
+    &::before {
+        display: none !important;
+    }
+}
+
+/* 覆盖激活标签的样式 */
+.ant-tabs-tab.ant-tabs-tab-active {
+    /* 移除激活标签的下划线 */
+    .ant-tabs-tab-btn::after {
+        display: none !important;
+    }
+}
+
+/* 移除 Ant Design 默认的下划线（ink bar） */
+.ant-tabs-nav-wrap::before {
+    display: none !important;
+}
+.ant-tabs-ink-bar {
+    display: none !important;
+}
+
+/* 自定义关闭图标样式 */
+.custom-close-icon {
+    margin-left: 8px;
+    cursor: pointer;
+    color: #fff; /* 激活时关闭按钮颜色 */
+}
+.ant-tabs-tab:not(.ant-tabs-tab-active) .custom-close-icon {
+    color: #666; /* 非激活时关闭按钮颜色 */
+}
