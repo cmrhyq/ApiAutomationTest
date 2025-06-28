@@ -1,9 +1,10 @@
 import "./index.css";
 import "@/assets/css/Common.css";
 import {useNavigate, Outlet} from "react-router-dom";
-import {Button, ConfigProvider, Image, Layout, Spin, theme, Tooltip} from "antd";
+import {Button, ConfigProvider, Dropdown, Image, Layout, MenuProps, message, Spin, theme, Tooltip} from "antd";
 import {Suspense, useState} from "react";
 import {
+    LoginOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     SettingOutlined, UserOutlined
@@ -12,9 +13,14 @@ import DynamicMenu from "./components/menu/DynamicMenu.tsx";
 import {useSelector} from "react-redux";
 import type {RootState} from "../../store";
 import DynamicTabs from "./components/tabs";
+import {logout} from "../../api/login.ts";
+import {AxiosResponse} from "axios";
+import {CommonResponse} from "../../page/login/model.ts";
+import {userSliceLogout} from "../../store/reducers/user/userSlice.ts";
 
 const {Header, Content, Sider} = Layout;
 
+// TODO 页面优化根绝gemini ai中的建议来
 function LayoutFrame() {
     const navigate = useNavigate();
     const {token: {colorBgContainer, borderRadiusLG}} = theme.useToken();
@@ -22,6 +28,70 @@ function LayoutFrame() {
     const [bodyBg] = useState("#f8f8fa");
     const [collapsed, setCollapsed] = useState(false);
     const {user} = useSelector((state: RootState) => state.user);
+
+    const items: MenuProps['items'] = [
+        {
+            icon: <UserOutlined/>,
+            label: "个人资料",
+            key: 'profile',
+        },
+        {
+            type: 'divider',
+        },
+        {
+            icon: <SettingOutlined/>,
+            label: "系统设置",
+            key: 'setting',
+        },
+        {
+            type: 'divider',
+        },
+        {
+            icon: <LoginOutlined />,
+            label: '退出登录',
+            key: 'userSliceLogout',
+        },
+    ];
+
+    /**
+     * 点击头像菜单项的处理函数
+     * @param key
+     */
+    const onClick: MenuProps['onClick'] = ({ key }) => {
+        switch (key) {
+            case 'profile':
+                navigate('/profile');
+                break;
+            case 'setting':
+                navigate('/setting');
+                break;
+            case 'userSliceLogout':
+                userLogout();
+                break;
+            default:
+                console.log(`Clicked on menu item with key: ${key}`);
+        }
+    };
+
+    /**
+     * 退出登录逻辑
+     */
+    const userLogout = async () => {
+        // TODO 退出登录逻辑
+        try {
+            const response: AxiosResponse<CommonResponse> = await logout();
+            if (response && response.data.code === 200) {
+                userSliceLogout()
+                navigate('/login');
+                message.success("退出登录成功");
+            } else {
+                message.error("退出登录失败");
+            }
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : "退出登录异常";
+            message.error(errorMessage);
+        }
+    }
 
     return (
         <ConfigProvider
@@ -79,7 +149,7 @@ function LayoutFrame() {
                                     onClick={() => navigate('/setting')}
                                 />
                             </Tooltip>
-                            <Tooltip placement="bottom" title="设置">
+                            <Dropdown menu={{ items, onClick }} trigger={['click']}>
                                 <Button
                                     size="large"
                                     color="default"
@@ -90,7 +160,7 @@ function LayoutFrame() {
                                         {user?.nickName || user?.userName}
                                     </span>
                                 </Button>
-                            </Tooltip>
+                            </Dropdown>
                         </div>
                     </Header>
                     <DynamicTabs/>

@@ -10,6 +10,7 @@ import {fetchUserInfo} from "../../store/reducers/user/userSlice";
 import type {AppDispatch} from "../../store";
 import "./login.css";
 import {AxiosResponse} from "axios";
+import {ImageResponse, LoginResponse} from "./model.ts";
 
 const {Title} = Typography;
 
