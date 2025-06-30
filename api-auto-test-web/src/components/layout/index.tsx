@@ -1,7 +1,7 @@
 import "./index.css";
 import "@/assets/css/Common.css";
 import {useNavigate, Outlet} from "react-router-dom";
-import {Button, ConfigProvider, Dropdown, Image, Layout, MenuProps, message, Spin, theme, Tooltip} from "antd";
+import {Button, ConfigProvider, Dropdown, Image, Layout, MenuProps, message, Spin, theme} from "antd";
 import {Suspense, useState} from "react";
 import {
     LoginOutlined,
@@ -118,8 +118,8 @@ function LayoutFrame() {
                   style={{
                       zIndex: 3,
                   }}>
-                    <div style={{height: 32, margin: 16}}>
-                        <Image alt="logo" src={"/src/assets/images/easyapi-logo.svg"} preview={false} height={32}/>
+                    <div style={{height: 40, margin: 16}}>
+                        <Image alt="logo" src={"/src/assets/images/bridge-test-logo.svg"} preview={false} height={50}/>
                     </div>
                     <DynamicMenu/>
                 </Sider>
@@ -140,15 +140,6 @@ function LayoutFrame() {
                             icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                             onClick={() => setCollapsed(!collapsed)}/>
                         <div style={{marginRight: 20, display: 'flex', alignItems: 'center'}}>
-                            <Tooltip placement="bottom" title="设置">
-                                <Button
-                                    size="large"
-                                    color="default"
-                                    variant="text"
-                                    icon={<SettingOutlined/>}
-                                    onClick={() => navigate('/setting')}
-                                />
-                            </Tooltip>
                             <Dropdown menu={{ items, onClick }} trigger={['click']}>
                                 <Button
                                     size="large"

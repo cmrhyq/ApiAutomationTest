@@ -5,6 +5,7 @@ const Login = React.lazy(() => import("../page/login"));
 const Index = React.lazy(() => import("../page/index"));
 const User = React.lazy(() => import("../page/system/user"));
 const Role = React.lazy(() => import("../page/system/role"));
+const Api = React.lazy(() => import("../page/interface/api"));
 const NotAuthorized = React.lazy(() => import("../page/error/notAuthorized"))
 const NotFound = React.lazy(() => import("../page/error/notFound"))
 const ServerError = React.lazy(() => import("../page/error/serverError"));
@@ -56,6 +57,13 @@ export const routes: RouteConfig[] = [
                 meta: {
                     requiresAuth: true,
                     permissions: ["system:role:list"]
+                }
+            },{
+                path: "api",
+                component: <Api/>,
+                meta: {
+                    requiresAuth: true,
+                    permissions: ["interface:api:list"]
                 }
             },{
                 path: "403",
